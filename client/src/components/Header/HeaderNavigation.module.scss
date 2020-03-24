@@ -1,0 +1,8 @@
+.wrapper {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    display: inline-grid;
+    grid-template-columns: 200px 1fr;
+    align-self: center;
+}

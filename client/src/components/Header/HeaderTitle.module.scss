@@ -1,0 +1,29 @@
+@import "../../scss/_variables";
+
+.wrapper {
+    width: 80%;
+    margin: auto;
+    color: $white;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.heading {
+    font-size: 10rem;
+
+    &Span {
+        color: #ffa929;
+    }
+}
+
+.description {
+    margin: 0;
+
+    &:last-child {
+        width: 50%;
+        text-align: justify;
+        margin-top: 2rem;
+    }
+}
