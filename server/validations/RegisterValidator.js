@@ -2,7 +2,7 @@ const validator = require("validator");
 
 const errors = {};
 
-module.exports = data => {
+module.exports = (data) => {
     // Email validation
     if (validator.isEmpty(data.email)) {
         errors.email = "Please write your E-mail address!";
@@ -28,6 +28,10 @@ module.exports = data => {
 
     if (!validator.isLength(data.password, { min: 6, max: 255 })) {
         errors.password = "Password length must be between 6 and 255!";
+    }
+
+    if (data.password !== data.passwordConfirm) {
+        errors.password = "Password aren't the same";
     }
 
     return errors;

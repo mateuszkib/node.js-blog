@@ -14,14 +14,14 @@ const crypto = require("crypto");
  * @method POST
  */
 exports.register = async (req, res) => {
-    const { email, name, password } = req.body;
+    const { email, name, password, passwordConfirm } = req.body;
     const validation = validateRegisterData(req.body);
     const saltRound = 10;
 
     if (!isEmpty(validation)) {
         return res.status(400).json({
             success: false,
-            errors: validation
+            errors: validation,
         });
     }
 
@@ -32,7 +32,7 @@ exports.register = async (req, res) => {
         const user = new User({
             email,
             name,
-            password: hashPassword
+            password: hashPassword,
         });
 
         let hashToken = user.generateHashToken();
@@ -52,7 +52,7 @@ exports.register = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            message: "Your registration was successful!"
+            message: "Your registration was successful!",
         });
     } catch (err) {
         if (err.name === "MongoError" && err.code === 11000) {
@@ -63,13 +63,13 @@ exports.register = async (req, res) => {
                     : "This name exist! Please choose another";
             res.status(400).json({
                 success: false,
-                errors: { [keyValue]: message }
+                errors: { [keyValue]: message },
             });
         } else {
             console.log(err);
             res.status(400).json({
                 success: false,
-                errors: err.message
+                errors: err.message,
             });
         }
     }
@@ -87,7 +87,7 @@ exports.login = async (req, res) => {
     if (!isEmpty(validation)) {
         return res.status(400).json({
             success: false,
-            errors: validation
+            errors: validation,
         });
     }
 
@@ -98,7 +98,7 @@ exports.login = async (req, res) => {
             validation.email = "User with this E-mail doesn't exist!";
             return res.status(400).json({
                 success: false,
-                errors: validation
+                errors: validation,
             });
         }
 
@@ -106,7 +106,7 @@ exports.login = async (req, res) => {
             validation.activated = "Your account isn't active";
             return res.json({
                 success: false,
-                message: validation
+                message: validation,
             });
         }
 
@@ -116,7 +116,7 @@ exports.login = async (req, res) => {
             validation.password = "Password is incorrect!";
             return res.status(400).json({
                 success: false,
-                errors: validation
+                errors: validation,
             });
         }
 
@@ -124,21 +124,21 @@ exports.login = async (req, res) => {
             { id: user._id },
             process.env.SECRET_KEY_TOKEN,
             {
-                expiresIn: "5h"
+                expiresIn: "5h",
             }
         );
 
         if (token) {
             res.status(200).json({
                 success: true,
-                token: `Bearer ${token}`
+                token: `Bearer ${token}`,
             });
         }
     } catch (errors) {
         console.log(errors);
         res.status(400).json({
             success: false,
-            errors
+            errors,
         });
     }
 };
@@ -157,13 +157,13 @@ exports.activateAccount = async (req, res) => {
         if (req.params.hash) {
             let user = await User.findOne({
                 activatedHashToken: hashToken,
-                activatedHashTokenExpired: { $gt: Date.now() }
+                activatedHashTokenExpired: { $gt: Date.now() },
             });
 
             if (!user) {
                 return res.status(400).json({
                     success: false,
-                    message: "Invalid token"
+                    message: "Invalid token",
                 });
             }
 
@@ -175,7 +175,7 @@ exports.activateAccount = async (req, res) => {
 
             res.status(201).json({
                 success: true,
-                message: "Your account is active!"
+                message: "Your account is active!",
             });
         }
     } catch (err) {

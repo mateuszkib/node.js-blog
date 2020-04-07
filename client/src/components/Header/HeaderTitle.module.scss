@@ -10,8 +10,8 @@
     justify-content: center;
 }
 
-.heading {
-    font-size: 10rem;
+.title {
+    font-size: 12vw;
 
     &Span {
         color: #ffa929;
@@ -21,9 +21,54 @@
 .description {
     margin: 0;
 
-    &:last-child {
-        width: 50%;
+    &:last-of-type {
+        width: 60%;
         text-align: justify;
         margin-top: 2rem;
+    }
+}
+
+.arrow {
+    margin-top: 3rem;
+    position: relative;
+    height: 40px;
+    width: 40px;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    svg {
+        fill: $white;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        animation-name: example;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+}
+
+@keyframes example {
+    from {
+        margin-top: 0px;
+    }
+    to {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 1170px) {
+    .title {
+        font-size: 13vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .description {
+        &:last-of-type {
+            width: 100%;
+        }
     }
 }
