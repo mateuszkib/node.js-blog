@@ -22,7 +22,7 @@ const HeaderNavigationItems = () => {
                     </NavLink>
                 </li>
                 <li className={styles.navItem}>
-                    <NavLink to="/login" className={styles.navItemLink}>
+                    <NavLink to="/auth" className={styles.navItemLink}>
                         Account
                     </NavLink>
                 </li>

@@ -1,8 +1,7 @@
 const validator = require("validator");
 
-const errors = {};
-
-module.exports = data => {
+module.exports = (data) => {
+    let errors = {};
     // Email validation
     if (validator.isEmpty(data.email)) {
         errors.email = "Please write your E-mail address!";

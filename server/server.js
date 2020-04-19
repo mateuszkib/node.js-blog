@@ -6,8 +6,13 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const expressFileUpload = require("express-fileupload");
 const path = require("path");
+const { handleError } = require("./middlewares/errorHandler");
+let cors = require("cors");
 
 const app = express();
+
+// use cors
+app.use(cors());
 
 // Load config
 dotenv.config({ path: "./config/config.env" });
@@ -33,12 +38,12 @@ mongoose
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
-        useFindAndModify: false
+        useFindAndModify: false,
     })
-    .then(connect => {
+    .then((connect) => {
         connect && console.log(`Database connection...`.underline.green);
     })
-    .catch(err => {
+    .catch((err) => {
         err && console.log(err);
     });
 
@@ -51,6 +56,9 @@ const userRoute = require("./routes/users");
 app.use("/api/auth", authRoute);
 app.use("/api/articles", articlesRoute);
 app.use("/api/users", userRoute);
+
+//handle errors
+app.use(handleError);
 
 // Run server
 app.listen(

@@ -8,55 +8,54 @@ const UserSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     name: {
         type: String,
-        required: true,
-        trim: true
+        trim: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     photo: {
         type: String,
-        default: "no-photo.jpg"
+        default: "no-photo.jpg",
     },
     role: {
         type: String,
         enum: ["user", "admin"],
-        default: "user"
+        default: "user",
     },
     slug: {
-        type: String
+        type: String,
     },
     activatedAt: {
-        type: Date
+        type: Date,
     },
     activatedHashToken: String,
     activatedHashTokenExpired: Date,
     createdAt: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now,
+    },
 });
 
 UserSchema.index(
     {
         email: 1,
-        name: 1
+        name: 1,
     },
     {
-        unique: true
+        unique: true,
     }
 );
 
-UserSchema.methods.checkPassword = async function(password) {
+UserSchema.methods.checkPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
 
-UserSchema.methods.generateHashToken = function() {
+UserSchema.methods.generateHashToken = function () {
     let hashToken = crypto.randomBytes(20).toString("hex");
 
     this.activatedHashToken = crypto
@@ -68,10 +67,10 @@ UserSchema.methods.generateHashToken = function() {
     return hashToken;
 };
 
-UserSchema.pre("save", function(next) {
+UserSchema.pre("save", function (next) {
     this.slug = slugify(this.name, {
         replacement: "-",
-        lower: true
+        lower: true,
     });
     next();
 });

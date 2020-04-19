@@ -1,8 +1,7 @@
 const validator = require("validator");
 
-const errors = {};
-
 module.exports = (data) => {
+    let errors = {};
     // Email validation
     if (validator.isEmpty(data.email)) {
         errors.email = "Please write your E-mail address!";
@@ -31,7 +30,7 @@ module.exports = (data) => {
     }
 
     if (data.password !== data.passwordConfirm) {
-        errors.password = "Password aren't the same";
+        errors.passwordConfirm = "Password aren't the same";
     }
 
     return errors;

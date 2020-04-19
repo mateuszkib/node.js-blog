@@ -7,15 +7,16 @@ const isEmpty = require("../utils/isEmpty");
 const sendMail = require("../mailer/sendMail");
 const registerAccountMail = require("../mailer/messages/registerMessage");
 const crypto = require("crypto");
+const { ErrorHandler } = require("../middlewares/errorHandler");
 
 /**
  * Register user
  * @url('/api/auth/register')
  * @method POST
  */
-exports.register = async (req, res) => {
-    const { email, name, password, passwordConfirm } = req.body;
-    const validation = validateRegisterData(req.body);
+exports.register = async (req, res, next) => {
+    const { email, name, password } = req.body.data;
+    const validation = validateRegisterData(req.body.data);
     const saltRound = 10;
 
     if (!isEmpty(validation)) {
@@ -52,26 +53,11 @@ exports.register = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            message: "Your registration was successful!",
+            message:
+                "Your registration was successful! Please go to e-mail box and confirm account.",
         });
     } catch (err) {
-        if (err.name === "MongoError" && err.code === 11000) {
-            const keyValue = Object.keys(err.keyValue)[0];
-            const message =
-                keyValue === "email"
-                    ? "This E-mail exist."
-                    : "This name exist! Please choose another";
-            res.status(400).json({
-                success: false,
-                errors: { [keyValue]: message },
-            });
-        } else {
-            console.log(err);
-            res.status(400).json({
-                success: false,
-                errors: err.message,
-            });
-        }
+        next(new ErrorHandler(err, 500));
     }
 };
 
@@ -81,8 +67,8 @@ exports.register = async (req, res) => {
  * @method POST
  */
 exports.login = async (req, res) => {
-    const { email, password } = req.body;
-    const validation = validateLoginData(req.body);
+    const { email, password } = req.body.data;
+    const validation = validateLoginData(req.body.data);
 
     if (!isEmpty(validation)) {
         return res.status(400).json({
@@ -103,10 +89,9 @@ exports.login = async (req, res) => {
         }
 
         if (user.activatedAt === undefined) {
-            validation.activated = "Your account isn't active";
-            return res.json({
+            return res.status(400).json({
                 success: false,
-                message: validation,
+                message: "Your account isn't active",
             });
         }
 
@@ -134,19 +119,16 @@ exports.login = async (req, res) => {
                 token: `Bearer ${token}`,
             });
         }
-    } catch (errors) {
-        console.log(errors);
-        res.status(400).json({
-            success: false,
-            errors,
-        });
+    } catch (err) {
+        console.log(err);
+        next(new ErrorHandler(err, 500));
     }
 };
 
 /**
  * Activate user account after click link in E-mail
  * @url('/api/auth/activate-account/:hash')
- * @method PUT
+ * @method GET
  */
 exports.activateAccount = async (req, res) => {
     try {
@@ -180,5 +162,6 @@ exports.activateAccount = async (req, res) => {
         }
     } catch (err) {
         console.log(err);
+        next(new ErrorHandler(err, 500));
     }
 };

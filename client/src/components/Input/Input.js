@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./Input.module.scss";
+import PropTypes from "prop-types";
 
-const Input = ({ type, name, placeholder }) => {
+const Input = ({ type, name, placeholder, onChange, value, error }) => {
     return (
         <div className={styles.formItem}>
             <input
@@ -9,10 +10,25 @@ const Input = ({ type, name, placeholder }) => {
                 name={name}
                 id={name}
                 placeholder={placeholder}
-                className={styles.input}
+                className={
+                    error
+                        ? styles.input + " " + styles.inputInvalid
+                        : styles.input
+                }
+                onChange={onChange}
+                value={value}
             />
+            {error && <div className={styles.formItemInvalid}>{error}</div>}
         </div>
     );
+};
+
+Input.propTypes = {
+    type: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
 };
 
 export default Input;

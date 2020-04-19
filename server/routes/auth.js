@@ -3,11 +3,11 @@ const router = express.Router();
 const {
     login,
     register,
-    activateAccount
+    activateAccount,
 } = require("../controllers/AuthController");
 
 router.route("/login").post(login);
 router.route("/register").post(register);
-router.route("/activate-account/:hash").put(activateAccount);
+router.route("/activate-account/:hash").get(activateAccount);
 
 module.exports = router;
