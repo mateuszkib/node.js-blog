@@ -12,18 +12,18 @@ import AlertState from "./context/alert/AlertState";
 
 function App() {
     return (
-        <AuthState>
-            <AlertState>
-                <Router>
+        <Router>
+            <AuthState>
+                <AlertState>
                     <>
                         <Switch>
                             <Route exact path="/auth" component={AuthView} />
                             <Route exact path="/" component={Header} />
                         </Switch>
                     </>
-                </Router>
-            </AlertState>
-        </AuthState>
+                </AlertState>
+            </AuthState>
+        </Router>
     );
 }
 

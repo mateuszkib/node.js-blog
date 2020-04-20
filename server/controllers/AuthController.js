@@ -78,7 +78,7 @@ exports.login = async (req, res) => {
     }
 
     try {
-        const user = await User.findOne({ email: email });
+        let user = await User.findOne({ email: email });
 
         if (!user) {
             validation.email = "User with this E-mail doesn't exist!";
@@ -113,10 +113,13 @@ exports.login = async (req, res) => {
             }
         );
 
+        user.password = undefined;
+
         if (token) {
             res.status(200).json({
                 success: true,
                 token: `Bearer ${token}`,
+                user,
             });
         }
     } catch (err) {
