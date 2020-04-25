@@ -2,10 +2,10 @@ import React from "react";
 import AuthForm from "../../components/Forms/AuthForm/AuthForm";
 import styles from "./AuthView.module.scss";
 
-const AuthView = () => {
+const AuthView = (props) => {
     return (
         <div className={styles.wrapper}>
-            <AuthForm></AuthForm>
+            <AuthForm {...props}></AuthForm>
         </div>
     );
 };

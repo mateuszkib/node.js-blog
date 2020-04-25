@@ -22,6 +22,7 @@ const AuthForm = (props) => {
         setActiveTab,
         clearErrors,
         message,
+        isAuth,
     } = authContext;
 
     const initialStateForm = {
@@ -34,7 +35,10 @@ const AuthForm = (props) => {
     const [form, setForm] = useState(initialStateForm);
 
     useEffect(() => {
-        if (message.hasOwnProperty("success")) {
+        if (isAuth) {
+            props.history.push("/");
+        }
+        if (message.hasOwnProperty("message")) {
             const { success, message: msg } = message;
             if (!success) {
                 setAlert({
@@ -49,7 +53,7 @@ const AuthForm = (props) => {
             }
         }
         // eslint-disable-next-line
-    }, [message]);
+    }, [message, isAuth]);
 
     const handleClickActiveTab = (tab) => {
         setActiveTab(tab);

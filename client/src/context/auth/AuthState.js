@@ -2,19 +2,21 @@ import React, { useReducer } from "react";
 import AuthContext from "./authContext";
 import authReducer from "./authReducer";
 
-import { withRouter } from "react-router-dom";
-
 import axios from "axios";
 import {
+    USER_LOADED,
     LOGIN_SUCCESS,
-    LOGIN_FAIL,
-    SET_ERRORS,
+    SET_AUTH_FAIL_MESSAGE,
+    SET_AUTH_ERRORS,
     REGISTER_SUCCESS,
     SET_ACTIVE_TAB,
     CLEAR_ERRORS,
+    USER_LOADED_FAIL,
+    LOGOUT,
 } from "../types";
+import setAuthToken from "../../utils/setAuthToken";
 
-const AuthState = ({ children, history }) => {
+const AuthState = ({ children }) => {
     const initialState = {
         token: localStorage.getItem("token"),
         isAuth: null,
@@ -25,7 +27,25 @@ const AuthState = ({ children, history }) => {
     };
 
     const [state, dispatch] = useReducer(authReducer, initialState);
+
     // Load user
+    const loadUser = async () => {
+        if (localStorage.token) {
+            setAuthToken(localStorage.token);
+        }
+        try {
+            const res = await axios.get("/api/users/current");
+            dispatch({
+                type: USER_LOADED,
+                payload: res.data,
+            });
+        } catch (err) {
+            dispatch({
+                type: USER_LOADED_FAIL,
+                payload: err.response.data,
+            });
+        }
+    };
 
     // Login user
     const auth = async (data, type) => {
@@ -37,7 +57,7 @@ const AuthState = ({ children, history }) => {
                         type: LOGIN_SUCCESS,
                         payload: res.data,
                     });
-                    history.push("/");
+                    loadUser();
                 } else if (type === "register") {
                     dispatch({
                         type: REGISTER_SUCCESS,
@@ -56,7 +76,7 @@ const AuthState = ({ children, history }) => {
             const { data } = err.response;
             if (data.hasOwnProperty("message")) {
                 dispatch({
-                    type: LOGIN_FAIL,
+                    type: SET_AUTH_FAIL_MESSAGE,
                     payload: data,
                 });
                 dispatch({
@@ -64,7 +84,7 @@ const AuthState = ({ children, history }) => {
                 });
             } else {
                 dispatch({
-                    type: SET_ERRORS,
+                    type: SET_AUTH_ERRORS,
                     payload: err.response.data,
                 });
             }
@@ -87,6 +107,9 @@ const AuthState = ({ children, history }) => {
     };
 
     // Logout
+    const logout = () => {
+        dispatch({ type: LOGOUT });
+    };
 
     return (
         <AuthContext.Provider
@@ -100,6 +123,8 @@ const AuthState = ({ children, history }) => {
                 auth,
                 setActiveTab,
                 clearErrors,
+                loadUser,
+                logout,
             }}
         >
             {children}
@@ -107,4 +132,4 @@ const AuthState = ({ children, history }) => {
     );
 };
 
-export default withRouter(AuthState);
+export default AuthState;

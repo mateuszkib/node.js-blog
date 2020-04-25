@@ -4,7 +4,8 @@ const {
     getUsers,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getCurrentUser,
 } = require("../controllers/UserController");
 const passport = require("passport");
 const { roleMiddleware } = require("../middlewares/roleMiddleware");
@@ -16,6 +17,11 @@ router
         roleMiddleware,
         getUsers
     );
+
+router
+    .route("/current")
+    .get(passport.authenticate("jwt", { session: false }), getCurrentUser);
+
 router
     .route("/:id")
     .get(passport.authenticate("jwt", { session: false }), getUser)

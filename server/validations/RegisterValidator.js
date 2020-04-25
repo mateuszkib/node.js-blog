@@ -17,7 +17,7 @@ module.exports = (data) => {
     }
 
     if (!validator.isLength(data.name, { min: 3, max: 255 })) {
-        errors.name = "Name length must be between 6 and 255!";
+        errors.name = "Name length must be between 3 and 255!";
     }
 
     // Password validation

@@ -13,12 +13,12 @@ exports.getUsers = async (req, res) => {
         let users = await User.find();
         res.status(200).json({
             success: true,
-            data: users
+            data: users,
         });
     } catch (e) {
         res.status(500).json({
             success: false,
-            message: "An error occurred trying to process your request"
+            message: "An error occurred trying to process your request",
         });
     }
 };
@@ -36,18 +36,18 @@ exports.getUser = async (req, res) => {
         if (!user) {
             return res.status(400).json({
                 success: false,
-                message: `User with ID ${req.params.id} doesn\'t exist`
+                message: `User with ID ${req.params.id} doesn\'t exist`,
             });
         }
 
         res.status(200).json({
             success: true,
-            data: user
+            data: user,
         });
     } catch (e) {
         res.status(500).json({
             success: false,
-            message: "An error occurred trying to process your request"
+            message: "An error occurred trying to process your request",
         });
     }
 };
@@ -65,7 +65,7 @@ exports.updateUser = async (req, res) => {
         if (!user) {
             return res.status(400).json({
                 success: false,
-                message: `User with ID ${req.params.id} doesn\'t exist`
+                message: `User with ID ${req.params.id} doesn\'t exist`,
             });
         }
 
@@ -83,15 +83,15 @@ exports.updateUser = async (req, res) => {
             if (photo.size > process.env.MAX_UPLOAD_FILE_SIZE) {
                 return res.status(400).json({
                     success: false,
-                    message: `Please upload an image less than ${process.env.MAX_UPLOAD_FILE_SIZE} bytes`
+                    message: `Please upload an image less than ${process.env.MAX_UPLOAD_FILE_SIZE} bytes`,
                 });
             }
 
-            photo.mv(`${folder}/${namePhoto}`, err => {
+            photo.mv(`${folder}/${namePhoto}`, (err) => {
                 if (err) {
                     return res.status(500).json({
                         success: false,
-                        message: "Problem with file upload"
+                        message: "Problem with file upload",
                     });
                 }
             });
@@ -99,18 +99,18 @@ exports.updateUser = async (req, res) => {
         }
 
         user = await User.findByIdAndUpdate(req.params.id, req.body, {
-            new: true
+            new: true,
         });
 
         res.status(201).json({
             success: true,
-            data: user
+            data: user,
         });
     } catch (e) {
         console.log(e);
         res.status(500).json({
             success: false,
-            message: "An error occurred trying to process your request"
+            message: "An error occurred trying to process your request",
         });
     }
 };
@@ -128,7 +128,7 @@ exports.deleteUser = async (req, res) => {
         if (!user) {
             return res.status(400).json({
                 success: false,
-                message: `User with ID ${req.params.id} doesn\'t exist`
+                message: `User with ID ${req.params.id} doesn\'t exist`,
             });
         }
 
@@ -136,12 +136,26 @@ exports.deleteUser = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            data: {}
+            data: {},
         });
     } catch (e) {
         res.status(500).json({
             success: false,
-            message: "An error occurred trying to process your request"
+            message: "An error occurred trying to process your request",
         });
     }
+};
+
+/**
+ * @METHOD GET
+ * GET current logged user
+ * @url('/api/user/current')
+ */
+exports.getCurrentUser = async (req, res) => {
+    req.user.password = undefined;
+    const { user } = req;
+    res.status(200).json({
+        success: true,
+        user,
+    });
 };
