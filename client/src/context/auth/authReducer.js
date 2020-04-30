@@ -1,6 +1,6 @@
 import {
     LOGIN_SUCCESS,
-    SET_AUTH_ERRORS,
+    SET_ERRORS,
     SET_AUTH_FAIL_MESSAGE,
     REGISTER_SUCCESS,
     CLEAR_ERRORS,
@@ -38,7 +38,7 @@ export default (state, action) => {
                 ...state,
                 message: { success: payload.success, message: payload.message },
             };
-        case SET_AUTH_ERRORS:
+        case SET_ERRORS:
             return { ...state, errors: payload };
         case SET_AUTH_FAIL_MESSAGE:
             return {

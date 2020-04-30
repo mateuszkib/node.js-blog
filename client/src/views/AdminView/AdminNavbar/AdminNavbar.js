@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faBell } from "@fortawesome/free-solid-svg-icons";
+import AuthContext from "../../../context/auth/authContext";
+import UserAvatar from "../../../components/Admin/Users/UserAvatar";
 
 const AdminNavbar = () => {
+    const authContext = useContext(AuthContext);
+    const { user, loadUser } = authContext;
+
+    useEffect(() => {
+        loadUser();
+    }, []);
+
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark pb-3">
             <NavLink className="navbar-brand" to="/">
                 Home
             </NavLink>
@@ -51,15 +60,9 @@ const AdminNavbar = () => {
                         </NavLink>
                     </li>
                     <li className="nav-item">
-                        <div class="text-center">
+                        <div className="text-center">
                             <NavLink className="nav-link" to="/admin/profile">
-                                <img
-                                    src="https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg"
-                                    class="rounded-circle"
-                                    alt="..."
-                                    width="40"
-                                    height="40"
-                                />
+                                {user && <UserAvatar user={user} size="2x" />}
                             </NavLink>
                         </div>
                     </li>

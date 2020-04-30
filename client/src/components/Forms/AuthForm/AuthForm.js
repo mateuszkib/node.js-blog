@@ -105,7 +105,9 @@ const AuthForm = (props) => {
                                 </span>
                             </div>
                             <form
-                                className={styles.form}
+                                className={
+                                    styles.form + " col-lg-8 offset-lg-2"
+                                }
                                 autoComplete="off"
                                 onSubmit={submitForm}
                             >

@@ -1,7 +1,9 @@
 const User = require("../models/User");
 const path = require("path");
 const fs = require("fs");
-const crypto = require("crypto");
+const { ErrorHandler } = require("../middlewares/errorHandler");
+const validateUserData = require("../validations/UsersValidator");
+const isEmpty = require("../utils/isEmpty");
 
 /**
  * @METHOD GET
@@ -112,6 +114,71 @@ exports.updateUser = async (req, res) => {
             success: false,
             message: "An error occurred trying to process your request",
         });
+    }
+};
+
+/**
+ * @METHOD POST
+ * Add new user
+ * @url('/api/users/')
+ */
+exports.addUser = async (req, res, next) => {
+    try {
+        let parseData = JSON.parse(req.body.data);
+
+        let validation = validateUserData(parseData);
+
+        if (!isEmpty(validation)) {
+            return res.status(400).json({
+                success: false,
+                errors: validation,
+            });
+        }
+
+        let { password } = parseData;
+
+        let hashPassword = await User.hashPassword(password);
+        let newUser = new User(parseData);
+        newUser.password = hashPassword;
+
+        if (req.files) {
+            let { photo } = req.files;
+            let parseFile = path.parse(photo.name);
+            let folder = `${process.env.PATH_TO_UPLOAD_USERS_IMAGE}/${newUser._id}`;
+            let namePhoto = `${newUser._id}${parseFile.ext}`;
+
+            if (!fs.existsSync(!folder)) {
+                fs.mkdirSync(folder, { recursive: true });
+            }
+
+            if (photo.size > process.env.MAX_UPLOAD_FILE_SIZE) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Please upload an image less than ${process.env.MAX_UPLOAD_FILE_SIZE} bytes`,
+                });
+            }
+
+            photo.mv(`${folder}/${namePhoto}`, (err) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: "Problem with file upload",
+                    });
+                }
+            });
+            newUser.photo = namePhoto;
+        }
+
+        await newUser.save();
+
+        res.status(201).json({
+            success: true,
+            data: newUser,
+            message: "User create successfully",
+        });
+    } catch (err) {
+        console.log(err);
+        next(new ErrorHandler(err, 500));
     }
 };
 

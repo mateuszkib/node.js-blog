@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    withRouter,
+} from "react-router-dom";
 
 import Header from "./components/Header/Header";
 import AuthView from "./views/AuthView/AuthView";
@@ -12,11 +17,19 @@ import "./css/bootstrap_reset.css";
 
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
+import AdminState from "./context/admin/AdminState";
 
 import setAuthToken from "./utils/setAuthToken";
-import AdminPanel from "./views/AdminView/AdminPanel";
+import AdminSidebar from "./views/AdminView/AdminSidebar/AdminSidebar";
+import AdminNavbar from "./views/AdminView/AdminNavbar/AdminNavbar";
+import Dashboard from "./views/AdminView/Dashboard/Dashboard";
 
-function App() {
+import Notification from "./components/Notification/Notification";
+import ListUsers from "./components/Admin/Users/ListUsers";
+import FormUser from "./components/Admin/Users/FormUser";
+
+function App(props) {
+    console.log(props);
     if (localStorage.token) {
         setAuthToken(localStorage.token);
     }
@@ -32,7 +45,36 @@ function App() {
                                 render={(props) => <AuthView {...props} />}
                             />
                             <Route exact path="/" component={Header} />
-                            <Route path="/admin" component={AdminPanel} />
+
+                            {/*Admin routing*/}
+                            {props.location.pathname.includes("admin") && (
+                                <AdminState>
+                                    <div className="container-fluid h-100">
+                                        <div className="row h-100">
+                                            <AdminSidebar />
+                                            <div className="col-lg-10 px-0">
+                                                <AdminNavbar />
+                                                <Route
+                                                    exact
+                                                    path="/admin"
+                                                    component={Dashboard}
+                                                />
+                                                <Route
+                                                    exact
+                                                    path="/admin/users"
+                                                    component={ListUsers}
+                                                />
+                                                <Route
+                                                    exact
+                                                    path="/admin/users/:id"
+                                                    component={FormUser}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <Notification />
+                                </AdminState>
+                            )}
                         </Switch>
                     </>
                 </AlertState>
@@ -41,4 +83,4 @@ function App() {
     );
 }
 
-export default App;
+export default withRouter(App);

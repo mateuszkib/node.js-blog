@@ -7,8 +7,8 @@ class ErrorHandler extends Error {
 }
 
 const handleError = (err, req, res, next) => {
+    console.log("dd");
     let errors = {};
-
     if (err.message.code === 11000) {
         const field = Object.keys(err.message.keyValue)[0];
         errors[field] = "Duplicate value. Please use another value";
@@ -20,6 +20,8 @@ const handleError = (err, req, res, next) => {
         success: false,
         errors,
     });
+
+    next();
 };
 
 module.exports = { ErrorHandler, handleError };

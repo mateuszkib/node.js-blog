@@ -6,12 +6,14 @@ const {
     updateUser,
     deleteUser,
     getCurrentUser,
+    addUser,
 } = require("../controllers/UserController");
 const passport = require("passport");
 const { roleMiddleware } = require("../middlewares/roleMiddleware");
 
 router
     .route("/")
+    .post(passport.authenticate("jwt", { session: false }), addUser)
     .get(
         passport.authenticate("jwt", { session: false }),
         roleMiddleware,

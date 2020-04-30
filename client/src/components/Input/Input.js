@@ -2,7 +2,15 @@ import React from "react";
 import styles from "./Input.module.scss";
 import PropTypes from "prop-types";
 
-const Input = ({ type, name, placeholder, onChange, value, error }) => {
+const Input = ({
+    type,
+    name,
+    placeholder,
+    onChange,
+    className,
+    value,
+    error,
+}) => {
     return (
         <div className={styles.formItem}>
             <input
@@ -11,7 +19,9 @@ const Input = ({ type, name, placeholder, onChange, value, error }) => {
                 id={name}
                 placeholder={placeholder}
                 className={
-                    error
+                    className
+                        ? className
+                        : error
                         ? styles.input + " " + styles.inputInvalid
                         : styles.input
                 }
@@ -28,7 +38,8 @@ Input.propTypes = {
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
+    error: PropTypes.string,
 };
 
 export default Input;

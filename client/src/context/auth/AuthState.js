@@ -7,7 +7,7 @@ import {
     USER_LOADED,
     LOGIN_SUCCESS,
     SET_AUTH_FAIL_MESSAGE,
-    SET_AUTH_ERRORS,
+    SET_ERRORS,
     REGISTER_SUCCESS,
     SET_ACTIVE_TAB,
     CLEAR_ERRORS,
@@ -84,7 +84,7 @@ const AuthState = ({ children }) => {
                 });
             } else {
                 dispatch({
-                    type: SET_AUTH_ERRORS,
+                    type: SET_ERRORS,
                     payload: err.response.data,
                 });
             }

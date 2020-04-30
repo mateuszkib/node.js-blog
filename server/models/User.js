@@ -12,6 +12,8 @@ const UserSchema = new Schema({
     },
     name: {
         type: String,
+        required: true,
+        unique: true,
         trim: true,
     },
     password: {
@@ -41,18 +43,14 @@ const UserSchema = new Schema({
     },
 });
 
-UserSchema.index(
-    {
-        email: 1,
-        name: 1,
-    },
-    {
-        unique: true,
-    }
-);
-
 UserSchema.methods.checkPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
+};
+
+UserSchema.statics.hashPassword = async function (password) {
+    const saltRound = 10;
+    const salt = await bcrypt.genSalt(saltRound);
+    return await bcrypt.hash(password, salt);
 };
 
 UserSchema.methods.generateHashToken = function () {

@@ -17,7 +17,6 @@ const { ErrorHandler } = require("../middlewares/errorHandler");
 exports.register = async (req, res, next) => {
     const { email, name, password } = req.body.data;
     const validation = validateRegisterData(req.body.data);
-    const saltRound = 10;
 
     if (!isEmpty(validation)) {
         return res.status(400).json({
@@ -26,8 +25,7 @@ exports.register = async (req, res, next) => {
         });
     }
 
-    const salt = await bcrypt.genSalt(saltRound);
-    const hashPassword = await bcrypt.hash(password, salt);
+    let hashPassword = await User.hashPassword(password);
 
     try {
         const user = new User({
