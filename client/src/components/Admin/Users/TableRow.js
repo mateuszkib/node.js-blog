@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserEdit, faUserTimes } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import UserAvatar from "./UserAvatar";
 import styles from "./TableRow.module.scss";
 import { NavLink } from "react-router-dom";
+import AdminContext from "../../../context/admin/adminContext";
 
 const TableRow = ({ user, index }) => {
+    const adminContext = useContext(AdminContext);
+    const { getUser } = adminContext;
     return (
         <tr className={styles.wrapper}>
             <td>{index + 1}</td>
@@ -18,7 +21,10 @@ const TableRow = ({ user, index }) => {
             </td>
             <td>{moment(user.createdAt).format("LLL")}</td>
             <td>
-                <NavLink to={`/admin/users/${user._id}`}>
+                <NavLink
+                    to={`/admin/users/${user._id}`}
+                    onClick={() => getUser(user._id)}
+                >
                     <FontAwesomeIcon
                         icon={faUserEdit}
                         style={{

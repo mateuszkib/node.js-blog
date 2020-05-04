@@ -33,7 +33,7 @@ exports.getUsers = async (req, res) => {
  */
 exports.getUser = async (req, res) => {
     try {
-        let user = await User.findById(req.params.id);
+        let user = await User.findById(req.params.id).select("-password");
 
         if (!user) {
             return res.status(400).json({

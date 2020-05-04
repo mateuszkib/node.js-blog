@@ -29,7 +29,6 @@ import ListUsers from "./components/Admin/Users/ListUsers";
 import FormUser from "./components/Admin/Users/FormUser";
 
 function App(props) {
-    console.log(props);
     if (localStorage.token) {
         setAuthToken(localStorage.token);
     }

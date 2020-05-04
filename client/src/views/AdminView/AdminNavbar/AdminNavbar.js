@@ -11,6 +11,7 @@ const AdminNavbar = () => {
 
     useEffect(() => {
         loadUser();
+        // eslint-disable-next-line
     }, []);
 
     return (

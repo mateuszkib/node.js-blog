@@ -13,6 +13,7 @@ const UserAvatar = ({ user, size }) => {
                     width="50"
                     height="50"
                     className="rounded-circle"
+                    alt="User avatar"
                 />
             )}
         </>

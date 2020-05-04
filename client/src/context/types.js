@@ -18,4 +18,6 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const SET_ACTIVE_TAB = "SET_ACTIVE_TAB";
 
 export const GET_USERS = "GET_USERS";
+export const GET_USER = "GET_USER";
+export const CLEAR_USER = "CLEAR_USER";
 export const SET_ADMIN_COMPONENT = "SET_ADMIN_COMPONENT";

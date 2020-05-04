@@ -8,11 +8,14 @@ import {
     SET_TOAST,
     CLEAR_TOAST,
     SET_ADMIN_COMPONENT,
+    GET_USER,
+    CLEAR_USER,
 } from "../types";
 
 const AdminState = ({ children }) => {
     const initialState = {
         users: null,
+        user: null,
         articles: null,
         posts: null,
         errors: {},
@@ -61,6 +64,19 @@ const AdminState = ({ children }) => {
         }
     };
 
+    // Get user
+    const getUser = async (id) => {
+        try {
+            const res = await axios.get(`/api/users/${id}`);
+            if (res.data.success) {
+                dispatch({
+                    type: GET_USER,
+                    payload: res.data.data,
+                });
+            }
+        } catch (err) {}
+    };
+
     // Add user
     const addUser = async (data, file = null) => {
         try {
@@ -87,16 +103,26 @@ const AdminState = ({ children }) => {
         }
     };
 
+    // Clear user
+    const clearUser = () => {
+        dispatch({
+            type: CLEAR_USER,
+        });
+    };
+
     return (
         <AdminContext.Provider
             value={{
                 users: state.users,
+                user: state.user,
                 aticles: state.articles,
                 posts: state.posts,
                 errors: state.errors,
                 message: state.message,
                 component: state.component,
                 getUsers,
+                getUser,
+                clearUser,
                 addUser,
                 setComponent,
             }}

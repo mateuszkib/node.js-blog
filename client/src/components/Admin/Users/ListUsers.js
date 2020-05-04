@@ -7,6 +7,7 @@ const ListUsers = () => {
     const { getUsers, users } = adminContext;
     useEffect(() => {
         getUsers();
+        // eslint-disable-next-line
     }, []);
 
     return (
