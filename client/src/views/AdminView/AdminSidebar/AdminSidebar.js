@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faNodeJs } from "@fortawesome/free-brands-svg-icons";
 import styles from "./AdminSidebar.module.scss";
+import AdminContext from "../../../context/admin/adminContext";
 
 library.add(fab);
 
 const AdminSidebar = () => {
+    const adminContext = useContext(AdminContext);
+    const { clearUser } = adminContext;
+
     return (
         <div className="col-2 bg-dark">
             <div className={styles.wrapper}>
@@ -38,7 +42,10 @@ const AdminSidebar = () => {
                                     </NavLink>
                                 </li>
                                 <li className="list-group-item list-group-item-light">
-                                    <NavLink to="/admin/users/add">
+                                    <NavLink
+                                        to="/admin/users/add"
+                                        onClick={() => clearUser()}
+                                    >
                                         Add new user
                                     </NavLink>
                                 </li>

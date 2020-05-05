@@ -23,7 +23,7 @@ export default (state, action) => {
         case CLEAR_USER:
             return {
                 ...state,
-                user: {},
+                user: null,
             };
         case SET_ERRORS:
             return {

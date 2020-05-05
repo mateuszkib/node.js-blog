@@ -2,11 +2,9 @@ import React, { useContext, useState, useEffect } from "react";
 import AdminContext from "../../../context/admin/adminContext";
 import Input from "../../Input/Input";
 
-const AddUser = (props) => {
+const AddUser = () => {
     const adminContext = useContext(AdminContext);
-    const { addUser, errors, getUser, user, clearUser } = adminContext;
-    const [button, setButton] = useState("Add");
-    const [formTitle, setFormTitle] = useState("Add user");
+    const { addUser, errors, user } = adminContext;
     const [file, setFile] = useState(null);
     const [form, setForm] = useState({
         name: "",
@@ -15,8 +13,9 @@ const AddUser = (props) => {
         passwordConfirm: "",
         role: "user",
     });
-
     const type = !window.location.href.includes("add") ? "edit" : "add";
+    const titleForm = type === "add" ? "Add User" : "Edit User";
+    const titleButton = type === "add" ? "Add" : "Update";
 
     useEffect(() => {
         if (user) {
@@ -26,8 +25,17 @@ const AddUser = (props) => {
                 email: user.email,
                 role: user.role,
             });
+        } else {
+            setForm({
+                name: "",
+                email: "",
+                password: "",
+                passwordConfirm: "",
+                role: "user",
+            });
         }
-    }, [user]);
+        // eslint-disable-next-line
+    }, [adminContext, user]);
 
     const handleChangeInput = (e) => {
         if (e.target.files) {
@@ -36,7 +44,6 @@ const AddUser = (props) => {
             setForm({ ...form, [e.target.name]: e.target.value });
         }
     };
-
     const submitForm = (e) => {
         e.preventDefault();
         addUser(form, file);
@@ -46,7 +53,7 @@ const AddUser = (props) => {
         <div className="container">
             <div className="row">
                 <div className="col-6 offset-md-3 mt-5">
-                    <h2>{formTitle}</h2>
+                    <h2>{titleForm}</h2>
                     <form onSubmit={submitForm}>
                         <div className="form-group">
                             <Input
@@ -127,7 +134,7 @@ const AddUser = (props) => {
                                 type="submit"
                                 className="btn btn-dark mb-2 w-100"
                             >
-                                {button}
+                                {titleButton}
                             </button>
                         </div>
                     </form>
