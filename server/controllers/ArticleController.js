@@ -15,7 +15,7 @@ exports.createArticle = async (req, res) => {
     if (!isEmpty(isValid)) {
         return res.status(400).json({
             success: false,
-            errors: isValid
+            errors: isValid,
         });
     }
 
@@ -23,7 +23,7 @@ exports.createArticle = async (req, res) => {
         let article = new Article({
             title: req.body.title,
             content: req.body.content,
-            author: req.user._id
+            author: req.user._id,
         });
 
         if (req.files) {
@@ -33,24 +33,24 @@ exports.createArticle = async (req, res) => {
 
             if (!fs.existsSync(process.env.PATH_TO_UPLOAD_ARTICLES_IMAGE)) {
                 fs.mkdirSync(process.env.PATH_TO_UPLOAD_ARTICLES_IMAGE, {
-                    recursive: true
+                    recursive: true,
                 });
             }
 
             if (image.size > process.env.MAX_UPLOAD_FILE_SIZE) {
                 return res.status(400).json({
                     success: false,
-                    message: `Please upload an image less than ${process.env.MAX_UPLOAD_FILE_SIZE} bytes`
+                    message: `Please upload an image less than ${process.env.MAX_UPLOAD_FILE_SIZE} bytes`,
                 });
             }
 
             image.mv(
                 `${process.env.PATH_TO_UPLOAD_ARTICLES_IMAGE}${photo}`,
-                err => {
+                (err) => {
                     if (err) {
                         return res.status(500).json({
                             success: false,
-                            message: "Problem with file upload"
+                            message: "Problem with file upload",
                         });
                     }
                     article.photo = photo;
@@ -62,13 +62,13 @@ exports.createArticle = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            message: "Article was been successfully added"
+            message: "Article was been successfully added",
         });
     } catch (err) {
         console.log(err);
         res.status(500).json({
             success: false,
-            message: "An error occurred while adding article"
+            message: "An error occurred while adding article",
         });
     }
 };
@@ -88,19 +88,19 @@ exports.getArticles = async (req, res) => {
 
     if (lastIndex < total) {
         pagination.next = {
-            page: page + 1
+            page: page + 1,
         };
     }
 
     if (startIndex > 0) {
         pagination.prev = {
-            page: page - 1
+            page: page - 1,
         };
     }
     const articles = await Article.find()
         .populate({
             path: "author posts",
-            select: "name"
+            select: "name",
         })
         .skip(startIndex)
         .limit(limit);
@@ -109,7 +109,7 @@ exports.getArticles = async (req, res) => {
         success: true,
         data: articles,
         pagination,
-        count: articles.length
+        count: articles.length,
     });
 };
 
@@ -126,20 +126,20 @@ exports.getArticle = async (req, res) => {
             populate: {
                 path: "comments user",
                 select: "name email content",
-                populate: { path: "user", select: "name email" }
-            }
+                populate: { path: "user", select: "name email" },
+            },
         });
 
     if (!article) {
         return res.status(404).json({
             success: false,
-            message: "Article doesn't exist"
+            message: "Article doesn't exist",
         });
     }
 
     res.status(200).json({
         success: true,
-        data: article
+        data: article,
     });
 };
 
@@ -157,14 +157,14 @@ exports.updateArticle = async (req, res) => {
         if (!isEmpty(isValid)) {
             return res.status(400).json({
                 success: false,
-                errors: isValid
+                errors: isValid,
             });
         }
 
         if (!article) {
             return res.status(404).json({
                 success: false,
-                message: "Article doesn't exist"
+                message: "Article doesn't exist",
             });
         }
 
@@ -176,13 +176,13 @@ exports.updateArticle = async (req, res) => {
             if (image.size > process.env.MAX_UPLOAD_FILE_SIZE) {
                 return res.status(400).json({
                     success: false,
-                    message: `Please upload an image less than ${process.env.MAX_UPLOAD_FILE_SIZE} bytes`
+                    message: `Please upload an image less than ${process.env.MAX_UPLOAD_FILE_SIZE} bytes`,
                 });
             }
 
             if (!fs.existsSync(process.env.PATH_TO_UPLOAD_ARTICLES_IMAGE)) {
                 fs.mkdirSync(process.env.PATH_TO_UPLOAD_ARTICLES_IMAGE, {
-                    recursive: true
+                    recursive: true,
                 });
             } else if (
                 fs.existsSync(
@@ -196,11 +196,11 @@ exports.updateArticle = async (req, res) => {
 
             image.mv(
                 `${process.env.PATH_TO_UPLOAD_ARTICLES_IMAGE}${photo}`,
-                err => {
+                (err) => {
                     if (err) {
                         return res.status(500).json({
                             success: false,
-                            message: "Problem with file upload"
+                            message: "Problem with file upload",
                         });
                     }
                     article.photo = photo;
@@ -211,18 +211,18 @@ exports.updateArticle = async (req, res) => {
 
         req.body.updatedAt = new Date();
         const updateArticle = await Article.findByIdAndUpdate(id, req.body, {
-            new: true
+            new: true,
         });
 
         res.status(200).json({
             success: true,
-            data: updateArticle
+            data: updateArticle,
         });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
             success: false,
-            error: err.message || "Server Error"
+            error: err.message || "Server Error",
         });
     }
 };

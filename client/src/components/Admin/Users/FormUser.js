@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import AdminContext from "../../../context/admin/adminContext";
 import Input from "../../Input/Input";
-import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Card } from "react-bootstrap";
+import UserAvatar from "./UserAvatar";
 
 const AddUser = () => {
     const adminContext = useContext(AdminContext);
@@ -53,7 +54,7 @@ const AddUser = () => {
     return (
         <div className="container">
             <div className="row mt-5">
-                <div className="col-6">
+                <div className={type === "add" ? "col-6 offset-lg-3" : "col-6"}>
                     <h2>{titleForm}</h2>
                     <form onSubmit={submitForm}>
                         <div className="form-group">
@@ -141,27 +142,22 @@ const AddUser = () => {
                     </form>
                 </div>
                 {user && (
-                    <div class="col-6">
-                        <Card style={{ width: "18rem" }}>
-                            <Card.Img
-                                variant="top"
-                                src={`/uploads/users/${user._id}/${user.photo}`}
-                            />
+                    <div className="col-6">
+                        <Card
+                            style={{ width: "20rem", margin: "0 auto" }}
+                            bg="dark"
+                            text="light"
+                            border="dark"
+                            className="text-center h-100"
+                        >
+                            <Card.Header>User Avatar</Card.Header>
                             <Card.Body>
-                                <Card.Title>User Info</Card.Title>
+                                <UserAvatar
+                                    user={user}
+                                    size="9x"
+                                    className="card-img-top d-flex justify-content-center align-self-center"
+                                />
                             </Card.Body>
-                            <ListGroup className="list-group-flush">
-                                <ListGroupItem>Cras justo odio</ListGroupItem>
-                                <ListGroupItem>
-                                    Dapibus ac facilisis in
-                                </ListGroupItem>
-                                <ListGroupItem>
-                                    Vestibulum at eros
-                                </ListGroupItem>
-                            </ListGroup>
-                            <Card.Footer className="text-muted">
-                                {user.role}
-                            </Card.Footer>
                         </Card>
                     </div>
                 )}

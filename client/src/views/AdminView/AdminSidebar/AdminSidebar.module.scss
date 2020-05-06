@@ -1,3 +1,12 @@
+.sidebarNav {
+    a {
+        color: #818182;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
 .logo {
     min-height: 74px;
 }

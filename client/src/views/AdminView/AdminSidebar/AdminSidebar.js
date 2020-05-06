@@ -58,10 +58,14 @@ const AdminSidebar = () => {
                             </span>
                             <ul className="list-group mt-1">
                                 <li className="list-group-item list-group-item-light">
-                                    Show all articles
+                                    <NavLink to="/admin/articles">
+                                        Show all articles
+                                    </NavLink>
                                 </li>
                                 <li className="list-group-item list-group-item-light">
-                                    Add new article
+                                    <NavLink to="/admin/articles/add">
+                                        Add new article
+                                    </NavLink>
                                 </li>
                             </ul>
                         </li>
@@ -72,7 +76,9 @@ const AdminSidebar = () => {
                             </span>
                             <ul className="list-group mt-1">
                                 <li className="list-group-item list-group-item-light">
-                                    Show all posts
+                                    <NavLink to="/admin/posts">
+                                        Show all posts
+                                    </NavLink>
                                 </li>
                             </ul>
                         </li>

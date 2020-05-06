@@ -17,7 +17,7 @@ const TableRow = ({ user, index }) => {
             <td>{user.email}</td>
             <td>{user.role}</td>
             <td>
-                <UserAvatar user={user} size="3x" />
+                <UserAvatar user={user} size="3x" height="50px" width="50px" />
             </td>
             <td>{moment(user.createdAt).format("LLL")}</td>
             <td>
