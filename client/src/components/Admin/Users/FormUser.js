@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import AdminContext from "../../../context/admin/adminContext";
 import Input from "../../Input/Input";
+import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 
 const AddUser = () => {
     const adminContext = useContext(AdminContext);
@@ -35,7 +36,7 @@ const AddUser = () => {
             });
         }
         // eslint-disable-next-line
-    }, [adminContext, user]);
+    }, [user]);
 
     const handleChangeInput = (e) => {
         if (e.target.files) {
@@ -51,8 +52,8 @@ const AddUser = () => {
 
     return (
         <div className="container">
-            <div className="row">
-                <div className="col-6 offset-md-3 mt-5">
+            <div className="row mt-5">
+                <div className="col-6">
                     <h2>{titleForm}</h2>
                     <form onSubmit={submitForm}>
                         <div className="form-group">
@@ -139,6 +140,31 @@ const AddUser = () => {
                         </div>
                     </form>
                 </div>
+                {user && (
+                    <div class="col-6">
+                        <Card style={{ width: "18rem" }}>
+                            <Card.Img
+                                variant="top"
+                                src={`/uploads/users/${user._id}/${user.photo}`}
+                            />
+                            <Card.Body>
+                                <Card.Title>User Info</Card.Title>
+                            </Card.Body>
+                            <ListGroup className="list-group-flush">
+                                <ListGroupItem>Cras justo odio</ListGroupItem>
+                                <ListGroupItem>
+                                    Dapibus ac facilisis in
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    Vestibulum at eros
+                                </ListGroupItem>
+                            </ListGroup>
+                            <Card.Footer className="text-muted">
+                                {user.role}
+                            </Card.Footer>
+                        </Card>
+                    </div>
+                )}
             </div>
         </div>
     );

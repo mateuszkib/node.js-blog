@@ -1,9 +1,7 @@
 import React from "react";
 
-const AdminPanel = () => {
-    return <></>;
+const Dashboard = () => {
+    return <h2>Dashboard</h2>;
 };
 
-AdminPanel.propTypes = {};
-
-export default AdminPanel;
+export default Dashboard;

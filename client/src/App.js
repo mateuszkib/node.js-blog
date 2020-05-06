@@ -28,7 +28,7 @@ import Notification from "./components/Notification/Notification";
 import ListUsers from "./components/Admin/Users/ListUsers";
 import FormUser from "./components/Admin/Users/FormUser";
 
-function App(props) {
+function App() {
     if (localStorage.token) {
         setAuthToken(localStorage.token);
     }
@@ -46,34 +46,37 @@ function App(props) {
                             <Route exact path="/" component={Header} />
 
                             {/*Admin routing*/}
-                            {props.location.pathname.includes("admin") && (
-                                <AdminState>
-                                    <div className="container-fluid h-100">
-                                        <div className="row h-100">
-                                            <AdminSidebar />
-                                            <div className="col-lg-10 px-0">
-                                                <AdminNavbar />
-                                                <Route
-                                                    exact
-                                                    path="/admin"
-                                                    component={Dashboard}
-                                                />
-                                                <Route
-                                                    exact
-                                                    path="/admin/users"
-                                                    component={ListUsers}
-                                                />
-                                                <Route
-                                                    exact
-                                                    path="/admin/users/:id"
-                                                    component={FormUser}
-                                                />
+                            <AdminState>
+                                <Route
+                                    path="/admin"
+                                    render={({ match: { url } }) => (
+                                        <div className="container-fluid h-100">
+                                            <div className="row h-100">
+                                                <AdminSidebar />
+                                                <div className="col-lg-10 px-0">
+                                                    <AdminNavbar />
+                                                    <Route
+                                                        path={`${url}/`}
+                                                        component={Dashboard}
+                                                        exact
+                                                    />
+                                                    <Route
+                                                        path={`${url}/users`}
+                                                        component={ListUsers}
+                                                        exact
+                                                    />
+                                                    <Route
+                                                        path={`${url}/users/:id`}
+                                                        component={FormUser}
+                                                        exact
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <Notification />
-                                </AdminState>
-                            )}
+                                    )}
+                                />
+                                <Notification />
+                            </AdminState>
                         </Switch>
                     </>
                 </AlertState>
