@@ -22,7 +22,7 @@ const TableRow = ({ user, index }) => {
             <td>{moment(user.createdAt).format("LLL")}</td>
             <td>
                 <NavLink
-                    to={`/admin/users/${user._id}`}
+                    to={`/admin/users/edit/${user._id}`}
                     onClick={() => getUser(user._id)}
                 >
                     <FontAwesomeIcon

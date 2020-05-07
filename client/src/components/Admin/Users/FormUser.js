@@ -4,9 +4,13 @@ import Input from "../../Input/Input";
 import { Card } from "react-bootstrap";
 import UserAvatar from "./UserAvatar";
 
-const AddUser = () => {
+const FormUser = ({
+    match: {
+        params: { action, id },
+    },
+}) => {
     const adminContext = useContext(AdminContext);
-    const { addUser, errors, user } = adminContext;
+    const { addUser, errors, user, getUser, updateUser } = adminContext;
     const [file, setFile] = useState(null);
     const [form, setForm] = useState({
         name: "",
@@ -15,12 +19,13 @@ const AddUser = () => {
         passwordConfirm: "",
         role: "user",
     });
-    const type = !window.location.href.includes("add") ? "edit" : "add";
+    const [type, setType] = useState(action);
     const titleForm = type === "add" ? "Add User" : "Edit User";
     const titleButton = type === "add" ? "Add" : "Update";
 
     useEffect(() => {
         if (user) {
+            setType("edit");
             setForm({
                 ...form,
                 name: user.name,
@@ -28,6 +33,7 @@ const AddUser = () => {
                 role: user.role,
             });
         } else {
+            setType("add");
             setForm({
                 name: "",
                 email: "",
@@ -39,6 +45,13 @@ const AddUser = () => {
         // eslint-disable-next-line
     }, [user]);
 
+    useEffect(() => {
+        if (id) {
+            getUser(id);
+        }
+        // eslint-disable-next-line
+    }, [id]);
+
     const handleChangeInput = (e) => {
         if (e.target.files) {
             setFile(e.target.files[0]);
@@ -48,7 +61,17 @@ const AddUser = () => {
     };
     const submitForm = (e) => {
         e.preventDefault();
-        addUser(form, file);
+        if (type === "add") {
+            addUser(form, file);
+        } else if (type === "edit" && id) {
+            let { name, email, role } = form;
+            let updateData = {
+                name,
+                email,
+                role,
+            };
+            updateUser(updateData, id, file);
+        }
     };
 
     return (
@@ -166,4 +189,4 @@ const AddUser = () => {
     );
 };
 
-export default AddUser;
+export default FormUser;

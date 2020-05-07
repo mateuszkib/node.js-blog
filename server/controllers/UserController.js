@@ -63,6 +63,7 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
     try {
         let user = await User.findById(req.params.id);
+        let parseData = JSON.parse(req.body.data);
 
         if (!user) {
             return res.status(400).json({
@@ -77,6 +78,17 @@ exports.updateUser = async (req, res) => {
             let folder = `${process.env.PATH_TO_UPLOAD_USERS_IMAGE}/${req.params.id}`;
             let userId = req.params.id;
             let namePhoto = `${userId}${parseFile.ext}`;
+            let pathFile = `${folder}/${namePhoto}`;
+
+            if (
+                photo.mimetype !== "image/png" &&
+                photo.mimetype !== "image/jpg"
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Please upload file with JPG or PNG extension`,
+                });
+            }
 
             if (!fs.existsSync(!folder)) {
                 fs.mkdirSync(folder, { recursive: true });
@@ -89,6 +101,10 @@ exports.updateUser = async (req, res) => {
                 });
             }
 
+            if (fs.existsSync(pathFile)) {
+                fs.unlinkSync(pathFile);
+            }
+
             photo.mv(`${folder}/${namePhoto}`, (err) => {
                 if (err) {
                     return res.status(500).json({
@@ -97,10 +113,10 @@ exports.updateUser = async (req, res) => {
                     });
                 }
             });
-            req.body.photo = namePhoto;
+            parseData.photo = namePhoto;
         }
 
-        user = await User.findByIdAndUpdate(req.params.id, req.body, {
+        user = await User.findByIdAndUpdate(req.params.id, parseData, {
             new: true,
         });
 

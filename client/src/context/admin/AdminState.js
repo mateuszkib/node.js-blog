@@ -7,9 +7,9 @@ import {
     SET_ERRORS,
     SET_TOAST,
     CLEAR_TOAST,
-    SET_ADMIN_COMPONENT,
     GET_USER,
     CLEAR_USER,
+    UPDATE_USER,
 } from "../types";
 
 const AdminState = ({ children }) => {
@@ -40,13 +40,8 @@ const AdminState = ({ children }) => {
             });
             setTimeout(() => {
                 dispatch({ type: CLEAR_TOAST });
-            }, 3000);
+            }, 5000);
         }
-    };
-
-    // Set active component
-    const setComponent = (component) => {
-        dispatch({ type: SET_ADMIN_COMPONENT, payload: component });
     };
 
     // Get users
@@ -103,6 +98,29 @@ const AdminState = ({ children }) => {
         }
     };
 
+    // Update user
+    const updateUser = async (data, id, file = null) => {
+        try {
+            let formData = new FormData();
+            if (file) {
+                formData.append("photo", file);
+            }
+            formData.append("data", JSON.stringify(data));
+
+            const config = {
+                headers: { "Content-Type": "multipart/form-data" },
+            };
+
+            const res = await axios.post(`/api/users/${id}`, formData, config);
+
+            if (res.data.success) {
+                console.log(res);
+            }
+        } catch (err) {
+            catchErrors(err);
+        }
+    };
+
     // Clear user
     const clearUser = () => {
         dispatch({
@@ -124,7 +142,7 @@ const AdminState = ({ children }) => {
                 getUser,
                 clearUser,
                 addUser,
-                setComponent,
+                updateUser,
             }}
         >
             {children}

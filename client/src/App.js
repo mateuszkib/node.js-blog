@@ -66,7 +66,10 @@ function App() {
                                                         exact
                                                     />
                                                     <Route
-                                                        path={`${url}/users/:id`}
+                                                        path={[
+                                                            `${url}/users/:action/:id`,
+                                                            `${url}/users/:action`,
+                                                        ]}
                                                         component={FormUser}
                                                         exact
                                                     />

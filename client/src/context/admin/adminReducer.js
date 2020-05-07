@@ -3,7 +3,6 @@ import {
     SET_ERRORS,
     SET_TOAST,
     CLEAR_TOAST,
-    SET_ADMIN_COMPONENT,
     GET_USER,
     CLEAR_USER,
 } from "../types";
@@ -42,11 +41,6 @@ export default (state, action) => {
             return {
                 ...state,
                 message: {},
-            };
-        case SET_ADMIN_COMPONENT:
-            return {
-                ...state,
-                component: action.payload,
             };
         default:
             return state;
