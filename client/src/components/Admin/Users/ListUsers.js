@@ -26,7 +26,7 @@ const ListUsers = () => {
                 </thead>
                 <tbody>
                     {users &&
-                        users.data.map((user, index) => (
+                        users.map((user, index) => (
                             <TableRow key={index} index={index} user={user} />
                         ))}
                 </tbody>

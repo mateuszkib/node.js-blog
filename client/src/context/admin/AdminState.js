@@ -10,6 +10,7 @@ import {
     GET_USER,
     CLEAR_USER,
     UPDATE_USER,
+    DELETE_USER,
 } from "../types";
 
 const AdminState = ({ children }) => {
@@ -44,6 +45,14 @@ const AdminState = ({ children }) => {
         }
     };
 
+    // Function to set success toast
+    const successToast = (res) => {
+        dispatch({ type: SET_TOAST, payload: res.data });
+        setTimeout(() => {
+            dispatch({ type: CLEAR_TOAST });
+        }, 5000);
+    };
+
     // Get users
     const getUsers = async () => {
         try {
@@ -51,7 +60,7 @@ const AdminState = ({ children }) => {
             if (res.data.success) {
                 dispatch({
                     type: GET_USERS,
-                    payload: res.data,
+                    payload: res.data.data,
                 });
             }
         } catch (err) {
@@ -88,10 +97,7 @@ const AdminState = ({ children }) => {
             const res = await axios.post("/api/users", formData, config);
 
             if (res.data.success) {
-                dispatch({ type: SET_TOAST, payload: res.data });
-                setTimeout(() => {
-                    dispatch({ type: CLEAR_TOAST });
-                }, 3000);
+                successToast(res);
             }
         } catch (err) {
             catchErrors(err);
@@ -114,11 +120,29 @@ const AdminState = ({ children }) => {
             const res = await axios.post(`/api/users/${id}`, formData, config);
 
             if (res.data.success) {
-                console.log(res);
+                let { data } = res.data;
+                dispatch({
+                    type: UPDATE_USER,
+                    payload: data,
+                });
+                successToast(res);
             }
         } catch (err) {
             catchErrors(err);
         }
+    };
+
+    // Delete user
+    const deleteUser = async (id) => {
+        try {
+            const res = await axios.delete(`/api/users/${id}`);
+            if (res.data.success) {
+                dispatch({
+                    type: DELETE_USER,
+                    payload: res.data.data,
+                });
+            }
+        } catch (err) {}
     };
 
     // Clear user
@@ -143,6 +167,7 @@ const AdminState = ({ children }) => {
                 clearUser,
                 addUser,
                 updateUser,
+                deleteUser,
             }}
         >
             {children}

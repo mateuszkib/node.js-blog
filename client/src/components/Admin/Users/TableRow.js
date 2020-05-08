@@ -9,7 +9,7 @@ import AdminContext from "../../../context/admin/adminContext";
 
 const TableRow = ({ user, index }) => {
     const adminContext = useContext(AdminContext);
-    const { getUser } = adminContext;
+    const { getUser, deleteUser } = adminContext;
     return (
         <tr className={styles.wrapper}>
             <td>{index + 1}</td>
@@ -37,6 +37,7 @@ const TableRow = ({ user, index }) => {
                 <FontAwesomeIcon
                     icon={faUserTimes}
                     style={{ color: "#ff5c33" }}
+                    onClick={() => deleteUser(user._id)}
                 />
             </td>
         </tr>

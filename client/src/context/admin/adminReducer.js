@@ -5,6 +5,8 @@ import {
     CLEAR_TOAST,
     GET_USER,
     CLEAR_USER,
+    UPDATE_USER,
+    DELETE_USER,
 } from "../types";
 
 export default (state, action) => {
@@ -18,6 +20,18 @@ export default (state, action) => {
             return {
                 ...state,
                 user: action.payload,
+            };
+        case UPDATE_USER:
+            return {
+                ...state,
+                user: action.payload,
+            };
+        case DELETE_USER:
+            return {
+                ...state,
+                users: state.users.filter(
+                    (user) => user._id !== action.payload._id
+                ),
             };
         case CLEAR_USER:
             return {

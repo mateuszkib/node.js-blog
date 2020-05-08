@@ -82,7 +82,7 @@ exports.updateUser = async (req, res) => {
 
             if (
                 photo.mimetype !== "image/png" &&
-                photo.mimetype !== "image/jpg"
+                photo.mimetype !== "image/jpeg"
             ) {
                 return res.status(400).json({
                     success: false,
@@ -97,7 +97,9 @@ exports.updateUser = async (req, res) => {
             if (photo.size > process.env.MAX_UPLOAD_FILE_SIZE) {
                 return res.status(400).json({
                     success: false,
-                    message: `Please upload an image less than ${process.env.MAX_UPLOAD_FILE_SIZE} bytes`,
+                    message: `Please upload an image less than ${
+                        process.env.MAX_UPLOAD_FILE_SIZE / 1000
+                    } KB`,
                 });
             }
 
@@ -123,6 +125,7 @@ exports.updateUser = async (req, res) => {
         res.status(201).json({
             success: true,
             data: user,
+            message: "User data has been successfully updated",
         });
     } catch (e) {
         console.log(e);
@@ -215,11 +218,12 @@ exports.deleteUser = async (req, res) => {
             });
         }
 
-        await user.remove();
+        // await user.remove();
 
         res.status(201).json({
             success: true,
-            data: {},
+            data: user,
+            message: "User has been successfully deleted",
         });
     } catch (e) {
         res.status(500).json({

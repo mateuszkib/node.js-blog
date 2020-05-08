@@ -20,4 +20,5 @@ export const SET_ACTIVE_TAB = "SET_ACTIVE_TAB";
 export const GET_USERS = "GET_USERS";
 export const GET_USER = "GET_USER";
 export const UPDATE_USER = "UPDATE_USER";
+export const DELETE_USER = "DELETE_USER";
 export const CLEAR_USER = "CLEAR_USER";
