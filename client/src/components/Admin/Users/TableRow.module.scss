@@ -1,5 +1,11 @@
 .wrapper {
     td {
         vertical-align: middle;
+
+        svg {
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
 }

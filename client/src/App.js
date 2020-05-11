@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
     BrowserRouter as Router,
     Route,
@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Header from "./components/Header/Header";
+import ArticlesList from "./components/Articles/ArticlesList";
 import AuthView from "./views/AuthView/AuthView";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -43,7 +44,16 @@ function App() {
                                 path="/auth"
                                 render={(props) => <AuthView {...props} />}
                             />
-                            <Route exact path="/" component={Header} />
+                            <Route
+                                exact
+                                path="/"
+                                render={(props) => (
+                                    <Fragment>
+                                        <Header />
+                                        <ArticlesList />
+                                    </Fragment>
+                                )}
+                            />
 
                             {/*Admin routing*/}
                             <AdminState>

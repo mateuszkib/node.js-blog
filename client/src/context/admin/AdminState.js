@@ -141,8 +141,11 @@ const AdminState = ({ children }) => {
                     type: DELETE_USER,
                     payload: res.data.data,
                 });
+                successToast(res);
             }
-        } catch (err) {}
+        } catch (err) {
+            catchErrors(err);
+        }
     };
 
     // Clear user
