@@ -1,0 +1,72 @@
+@import "../../../scss/_variables";
+
+.wrapper {
+    position: relative;
+
+    &:hover {
+        .icons {
+            visibility: visible;
+        }
+    }
+}
+
+.category {
+    display: inline-block;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.2);
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    height: 200px;
+    font-size: 40px;
+}
+
+.icons {
+    visibility: hidden;
+    margin-bottom: 1.5rem;
+
+    a {
+        display: inline-block;
+        background: rgba(0, 0, 0, 0.05);
+        margin-right: 10px;
+        padding: 20px;
+        border-radius: 5px;
+
+        &:hover {
+            background: $black;
+
+            svg {
+                color: $white;
+            }
+        }
+
+        svg {
+            color: $black;
+            font-size: 22px;
+        }
+    }
+}
+
+.footer {
+    position: absolute;
+    bottom: 10px;
+    font-size: 14px;
+
+    &Date {
+        font-weight: bold;
+    }
+
+    &Author {
+        color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.image {
+    img {
+        height: 400px;
+        width: 100%;
+        object-fit: cover;
+    }
+}

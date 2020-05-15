@@ -51,11 +51,13 @@ mongoose
 const authRoute = require("./routes/auth");
 const articlesRoute = require("./routes/articles");
 const userRoute = require("./routes/users");
+const categoryRoute = require("./routes/categories");
 
 // Routing
 app.use("/api/auth", authRoute);
 app.use("/api/articles", articlesRoute);
 app.use("/api/users", userRoute);
+app.use("/api/categories", categoryRoute);
 
 //handle errors
 app.use(handleError);

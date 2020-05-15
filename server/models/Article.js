@@ -1,37 +1,43 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Category = require("../models/Category");
 
 const ArticleSchema = new Schema(
     {
         title: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
         },
         content: {
             type: String,
-            required: true
+            required: true,
+        },
+        category: {
+            type: Schema.Types.ObjectId,
+            ref: Category,
+            required: true,
         },
         photo: {
             type: String,
-            default: "no-photo.jpg"
+            default: "no-photo.jpg",
         },
         author: {
             type: Schema.Types.ObjectId,
             ref: "User",
-            required: true
+            required: true,
         },
         createdAt: {
             type: Date,
-            default: Date.now
+            default: Date.now,
         },
         updatedAt: {
-            type: Date
-        }
+            type: Date,
+        },
     },
     {
         toJSON: { virtuals: true },
-        toObject: { virtuals: true }
+        toObject: { virtuals: true },
     }
 );
 
@@ -40,7 +46,7 @@ ArticleSchema.virtual("posts", {
     localField: "_id",
     foreignField: "article",
     justOne: false,
-    count: true
+    count: true,
 });
 
 module.exports = mongoose.model("Article", ArticleSchema);

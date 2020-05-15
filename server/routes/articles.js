@@ -5,7 +5,7 @@ const {
     createArticle,
     getArticles,
     getArticle,
-    updateArticle
+    updateArticle,
 } = require("../controllers/ArticleController");
 const { roleMiddleware } = require("../middlewares/roleMiddleware");
 
@@ -24,7 +24,7 @@ router
         roleMiddleware,
         createArticle
     )
-    .get(passport.authenticate("jwt", { session: false }), getArticles);
+    .get(getArticles);
 
 router
     .route("/:id")

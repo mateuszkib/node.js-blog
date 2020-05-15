@@ -24,6 +24,7 @@ exports.createArticle = async (req, res) => {
             title: req.body.title,
             content: req.body.content,
             author: req.user._id,
+            category: req.body.category,
         });
 
         if (req.files) {
@@ -53,9 +54,9 @@ exports.createArticle = async (req, res) => {
                             message: "Problem with file upload",
                         });
                     }
-                    article.photo = photo;
                 }
             );
+            article.photo = photo;
         }
 
         await article.save();
@@ -79,7 +80,7 @@ exports.createArticle = async (req, res) => {
  * @METHOD GET
  */
 exports.getArticles = async (req, res) => {
-    let limit = 5;
+    let limit = parseInt(req.query.limit) || 10;
     let page = parseInt(req.query.page) || 1;
     let startIndex = (page - 1) * limit;
     let total = await Article.countDocuments();
@@ -97,13 +98,10 @@ exports.getArticles = async (req, res) => {
             page: page - 1,
         };
     }
-    const articles = await Article.find()
-        .populate({
-            path: "author posts",
-            select: "name",
-        })
-        .skip(startIndex)
-        .limit(limit);
+    const articles = await Article.find({}).populate({
+        path: "author posts category",
+        select: "name",
+    });
 
     res.status(200).json({
         success: true,

@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import Header from "./components/Header/Header";
-import ArticlesList from "./components/Articles/ArticlesList";
+import ArticlesSection from "./components/Home/Articles/ArticlesSection";
 import AuthView from "./views/AuthView/AuthView";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,6 +19,7 @@ import "./css/bootstrap_reset.css";
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
 import AdminState from "./context/admin/AdminState";
+import ArticleState from "./context/articles/ArticleState";
 
 import setAuthToken from "./utils/setAuthToken";
 import AdminSidebar from "./views/AdminView/AdminSidebar/AdminSidebar";
@@ -37,61 +38,67 @@ function App() {
         <Router>
             <AuthState>
                 <AlertState>
-                    <>
-                        <Switch>
-                            <Route
-                                exact
-                                path="/auth"
-                                render={(props) => <AuthView {...props} />}
-                            />
-                            <Route
-                                exact
-                                path="/"
-                                render={(props) => (
-                                    <Fragment>
-                                        <Header />
-                                        <ArticlesList />
-                                    </Fragment>
-                                )}
-                            />
-
-                            {/*Admin routing*/}
-                            <AdminState>
+                    <ArticleState>
+                        <>
+                            <Switch>
                                 <Route
-                                    path="/admin"
-                                    render={({ match: { url } }) => (
-                                        <div className="container-fluid h-100">
-                                            <div className="row h-100">
-                                                <AdminSidebar />
-                                                <div className="col-lg-10 px-0">
-                                                    <AdminNavbar />
-                                                    <Route
-                                                        path={`${url}/`}
-                                                        component={Dashboard}
-                                                        exact
-                                                    />
-                                                    <Route
-                                                        path={`${url}/users`}
-                                                        component={ListUsers}
-                                                        exact
-                                                    />
-                                                    <Route
-                                                        path={[
-                                                            `${url}/users/:action/:id`,
-                                                            `${url}/users/:action`,
-                                                        ]}
-                                                        component={FormUser}
-                                                        exact
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
+                                    exact
+                                    path="/auth"
+                                    render={(props) => <AuthView {...props} />}
+                                />
+                                <Route
+                                    exact
+                                    path="/"
+                                    render={(props) => (
+                                        <Fragment>
+                                            <Header />
+                                            <ArticlesSection />
+                                        </Fragment>
                                     )}
                                 />
-                                <Notification />
-                            </AdminState>
-                        </Switch>
-                    </>
+
+                                {/*Admin routing*/}
+                                <AdminState>
+                                    <Route
+                                        path="/admin"
+                                        render={({ match: { url } }) => (
+                                            <div className="container-fluid h-100">
+                                                <div className="row h-100">
+                                                    <AdminSidebar />
+                                                    <div className="col-lg-10 px-0">
+                                                        <AdminNavbar />
+                                                        <Route
+                                                            path={`${url}/`}
+                                                            component={
+                                                                Dashboard
+                                                            }
+                                                            exact
+                                                        />
+                                                        <Route
+                                                            path={`${url}/users`}
+                                                            component={
+                                                                ListUsers
+                                                            }
+                                                            exact
+                                                        />
+                                                        <Route
+                                                            path={[
+                                                                `${url}/users/:action/:id`,
+                                                                `${url}/users/:action`,
+                                                            ]}
+                                                            component={FormUser}
+                                                            exact
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    />
+                                    <Notification />
+                                </AdminState>
+                            </Switch>
+                        </>
+                    </ArticleState>
                 </AlertState>
             </AuthState>
         </Router>

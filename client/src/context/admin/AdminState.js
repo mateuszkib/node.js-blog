@@ -48,9 +48,9 @@ const AdminState = ({ children }) => {
     // Function to set success toast
     const successToast = (res) => {
         dispatch({ type: SET_TOAST, payload: res.data });
-        setTimeout(() => {
-            dispatch({ type: CLEAR_TOAST });
-        }, 5000);
+        // setTimeout(() => {
+        //     dispatch({ type: CLEAR_TOAST });
+        // }, 5000);
     };
 
     // Get users
@@ -134,17 +134,19 @@ const AdminState = ({ children }) => {
 
     // Delete user
     const deleteUser = async (id) => {
-        try {
-            const res = await axios.delete(`/api/users/${id}`);
-            if (res.data.success) {
-                dispatch({
-                    type: DELETE_USER,
-                    payload: res.data.data,
-                });
-                successToast(res);
+        if (window.confirm("Are you sure to delete?")) {
+            try {
+                const res = await axios.delete(`/api/users/${id}`);
+                if (res.data.success) {
+                    dispatch({
+                        type: DELETE_USER,
+                        payload: res.data.data,
+                    });
+                    successToast(res);
+                }
+            } catch (err) {
+                catchErrors(err);
             }
-        } catch (err) {
-            catchErrors(err);
         }
     };
 

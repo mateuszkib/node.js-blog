@@ -12,10 +12,8 @@ const Notification = () => {
         bottom: "20px",
         right: "20px",
         opacity: 1,
-        width: "300px",
-    };
-
-    const stylesToastBackground = {
+        height: "100px",
+        width: "100%",
         background: "#343a40",
     };
 
@@ -25,7 +23,7 @@ const Notification = () => {
         <>
             {message.message && (
                 <Toast style={stylesToast}>
-                    <Toast.Header style={stylesToastBackground}>
+                    <Toast.Header className="bg-dark">
                         <strong className={"mr-auto " + typeMessage}>
                             Message
                         </strong>
@@ -33,7 +31,7 @@ const Notification = () => {
                             {moment().fromNow()}
                         </small>
                     </Toast.Header>
-                    <Toast.Body className={typeMessage}>
+                    <Toast.Body className={typeMessage + " font-weight-bold"}>
                         {message.message}
                     </Toast.Body>
                 </Toast>
