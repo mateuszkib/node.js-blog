@@ -11,7 +11,7 @@ import styles from "./ArticlesItem.module.scss";
 import moment from "moment";
 
 const ArticlesItem = ({ article }) => {
-    console.log(article);
+    console.log(article.title.length);
     return (
         <div className={styles.wrapper + " row mb-5"}>
             <div className="col-xl-8 col-lg-6 col-md-6">
@@ -32,7 +32,11 @@ const ArticlesItem = ({ article }) => {
                 <span className={styles.category}>
                     {article.category.name.toUpperCase()}
                 </span>
-                <h2 className={styles.title}>{article.title}</h2>
+                <h2 className={styles.title}>
+                    {article.title.length > 50
+                        ? article.title + "..."
+                        : article.title}
+                </h2>
                 <div className={styles.icons}>
                     <a href="https://twitter.com">
                         <FontAwesomeIcon icon={faTwitter} />

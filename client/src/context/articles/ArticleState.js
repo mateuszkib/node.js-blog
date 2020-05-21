@@ -18,7 +18,6 @@ const ArticleState = ({ children }) => {
         try {
             const res = await axios.get("/api/articles");
             if (res.data.success) {
-                console.log(res);
                 let { data } = res.data;
                 dispatch({
                     type: GET_ARTICLES,

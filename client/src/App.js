@@ -1,10 +1,5 @@
 import React, { Fragment } from "react";
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch,
-    withRouter,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Header from "./components/Header/Header";
 import ArticlesSection from "./components/Home/Articles/ArticlesSection";
@@ -29,6 +24,9 @@ import Dashboard from "./views/AdminView/Dashboard/Dashboard";
 import Notification from "./components/Notification/Notification";
 import ListUsers from "./components/Admin/Users/ListUsers";
 import FormUser from "./components/Admin/Users/FormUser";
+import Footer from "./components/Home/Footer/Footer";
+
+require("dotenv").config();
 
 function App() {
     if (localStorage.token) {
@@ -53,6 +51,7 @@ function App() {
                                         <Fragment>
                                             <Header />
                                             <ArticlesSection />
+                                            <Footer />
                                         </Fragment>
                                     )}
                                 />
@@ -105,4 +104,4 @@ function App() {
     );
 }
 
-export default withRouter(App);
+export default App;

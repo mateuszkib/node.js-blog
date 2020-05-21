@@ -1,0 +1,94 @@
+@import "../../../scss/variables";
+@import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
+
+.wrapper {
+    background: #222831;
+    padding: 50px 0;
+    color: $white;
+
+    a {
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    ul {
+        list-style: none;
+
+        li {
+            margin-bottom: 10px;
+
+            &:hover {
+                color: #ffa929;
+
+                svg {
+                    color: #ffa929;
+                }
+            }
+        }
+    }
+
+    p,
+    svg,
+    a {
+        color: $white;
+    }
+
+    svg {
+        font-size: 15px;
+    }
+}
+
+.title {
+    margin-bottom: 1.5rem;
+}
+
+.icons {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        margin-right: 5px;
+        border-radius: 50%;
+        height: 60px;
+        width: 60px;
+
+        &:hover {
+            svg {
+                color: #ffa929;
+            }
+        }
+    }
+
+    svg {
+        font-size: 30px;
+    }
+}
+
+.information {
+    li {
+        display: flex;
+        align-items: center;
+
+        svg {
+            margin-right: 10px;
+        }
+    }
+}
+
+.question {
+    ul {
+        li {
+            &:first-child {
+                color: rgba(255, 255, 255, 0.7);
+            }
+            svg {
+                margin-right: 20px;
+            }
+        }
+    }
+}
