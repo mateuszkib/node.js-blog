@@ -30,12 +30,9 @@ MAILTRAP_PASSWORD=
 MAILTRAP_EMAIL_FROM=
 ```
 
-## Run React
+## Run App
 ```
-npm start
-```
-
-## Run node server
-```
+cd ./server
 npm run dev
 ```
+
